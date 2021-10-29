@@ -8,7 +8,7 @@ require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
 
-
+// https://git.heroku.com/serene-island-93451.g
 // MiddleWare
 app.use(cors())
 app.use(express.json())
@@ -25,10 +25,16 @@ async function run() {
         await client.connect()
         const database = client.db('chorabali_delivery')
         const serviceCollection = database.collection('services')
-
+        const restaurantCollection = database.collection('restaurants')
         // Services api
         app.get('/services', async (req, res) => {
             const result = await serviceCollection.find({}).toArray()
+            res.send(result)
+        })
+
+        // Restaurant api
+        app.get('/restaurant', async (req, res) => {
+            const result = await restaurantCollection.find({}).toArray()
             res.send(result)
         })
     }
