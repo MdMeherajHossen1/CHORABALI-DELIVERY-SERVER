@@ -27,6 +27,15 @@ async function run() {
         const serviceCollection = database.collection('services')
         const restaurantCollection = database.collection('restaurants')
         const groceryCollection = database.collection('grocery')
+
+        // Services post api
+        app.post('/services', async (req, res) => {
+            console.log(req.body)
+            const result = await serviceCollection.insertOne(req.body)
+            res.send(result)
+            console.log(result)
+        })
+
         // Services api
         app.get('/services', async (req, res) => {
             const result = await serviceCollection.find({}).toArray()
