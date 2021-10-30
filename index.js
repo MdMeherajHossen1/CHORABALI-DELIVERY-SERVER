@@ -26,6 +26,7 @@ async function run() {
         const database = client.db('chorabali_delivery')
         const serviceCollection = database.collection('services')
         const restaurantCollection = database.collection('restaurants')
+        const groceryCollection = database.collection('grocery')
         // Services api
         app.get('/services', async (req, res) => {
             const result = await serviceCollection.find({}).toArray()
@@ -35,6 +36,11 @@ async function run() {
         // Restaurant api
         app.get('/restaurant', async (req, res) => {
             const result = await restaurantCollection.find({}).toArray()
+            res.send(result)
+        })
+        // Grocery api
+        app.get('/grocery', async (req, res) => {
+            const result = await groceryCollection.find({}).toArray()
             res.send(result)
         })
     }
