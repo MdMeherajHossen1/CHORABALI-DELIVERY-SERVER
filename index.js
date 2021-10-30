@@ -7,8 +7,9 @@ require('dotenv').config()
 
 const app = express();
 const port = process.env.PORT || 5000;
+const ObjectId = require("mongodb").ObjectId;
 
-// https://git.heroku.com/serene-island-93451.g
+
 // MiddleWare
 app.use(cors())
 app.use(express.json())
@@ -27,13 +28,13 @@ async function run() {
         const serviceCollection = database.collection('services')
         const restaurantCollection = database.collection('restaurants')
         const groceryCollection = database.collection('grocery')
-
+        const ordersCollection = database.collection('orders')
         // Services post api
         app.post('/services', async (req, res) => {
             console.log(req.body)
             const result = await serviceCollection.insertOne(req.body)
             res.send(result)
-            console.log(result)
+
         })
 
         // Services api
@@ -42,6 +43,19 @@ async function run() {
             res.send(result)
         })
 
+        // single Services api
+        app.get('/services/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await serviceCollection.find(query).toArray()
+            res.json(result)
+        })
+
+        // orders Store
+        app.post('/orders', async (req, res) => {
+            const result = await ordersCollection.insertOne(req.body)
+            res.send(result)
+        })
         // Restaurant api
         app.get('/restaurant', async (req, res) => {
             const result = await restaurantCollection.find({}).toArray()
