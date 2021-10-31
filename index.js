@@ -43,6 +43,14 @@ async function run() {
             res.send(result)
         })
 
+        // Services Delete Api
+        app.delete('/services/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await serviceCollection.deleteOne(query)
+            res.send(result)
+        })
+
         // single Services api
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id
@@ -56,11 +64,39 @@ async function run() {
             const result = await ordersCollection.insertOne(req.body)
             res.send(result)
         })
+
+
+        //  GEt all orders of users
+        app.get('/orders', async (req, res) => {
+            const result = await ordersCollection.find({}).toArray()
+            res.json(result)
+        })
+
+
+        // get SingleUsers orders
+        app.get('/orders/:email', async (req, res) => {
+            const result = await ordersCollection.find({ email: req.params.email }).toArray()
+            res.send(result)
+        })
+
+        //  Delete services through user
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id
+            console.log(id)
+            const query = { _id: ObjectId(id) }
+            const result = await ordersCollection.deleteOne(query)
+            res.send(result)
+            console.log(result)
+        })
+
+
         // Restaurant api
         app.get('/restaurant', async (req, res) => {
             const result = await restaurantCollection.find({}).toArray()
             res.send(result)
         })
+
+
         // Grocery api
         app.get('/grocery', async (req, res) => {
             const result = await groceryCollection.find({}).toArray()
